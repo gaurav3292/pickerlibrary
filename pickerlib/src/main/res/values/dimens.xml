@@ -1,0 +1,39 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="pager_margin">68dp</dimen>
+    <dimen name="divider_height">16dp</dimen>
+    <dimen name="divider_height_medium">14dp</dimen>
+    <dimen name="divider_height_small">14dp</dimen>
+    <dimen name="divider_height_xsmall">8dp</dimen>
+
+    <dimen name="search_divider_height">0dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="parallelXheight">280dp</dimen>
+    <dimen name="news_parallelx_height">200dp</dimen>
+
+
+    <!-- App Primary Text Sizes -->
+    <dimen name="app_text_size_xsmall">11sp</dimen>
+    <dimen name="app_text_size_exsmall">8sp</dimen>
+    <dimen name="app_text_size_small">12sp</dimen>
+    <dimen name="app_text_size_medium">14sp</dimen>
+    <dimen name="app_text_size_xmedium">16sp</dimen>
+    <dimen name="app_text_size_large">18sp</dimen>
+    <dimen name="app_text_size_xlarge">20sp</dimen>
+    <dimen name="app_text_size_xxlarge">25sp</dimen>
+    <dimen name="app_text_size_diff_large_small">6sp</dimen>
+    <dimen name="default_elevation">8dp</dimen>
+    <dimen name="app_edit_size_padding">15dp</dimen>
+
+
+    <!-- Aspect ratios -->
+    <item name="aspect_16_9" format="float" type="dimen">1.7778</item>
+    <item name="aspect_4_3" format="float" type="dimen">1.3333</item>
+    <item name="aspect_2_1" format="float" type="dimen">2</item>
+    <item name="aspect_phi" format="float" type="dimen">1.618</item>
+
+
+</resources>

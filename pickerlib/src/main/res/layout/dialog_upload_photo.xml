@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:background="@color/app_white"
+    android:id="@+id/dialog_upload_photo"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:textColor="@color/app_white"
+        android:paddingTop="7.5dp"
+        android:paddingBottom="7.5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:fontFamily="@font/work_sans"
+        android:text="Upload Profile Image"
+        android:textSize="@dimen/app_text_size_medium"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:id="@+id/open_gallery"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            style="@style/SelectableItemBackground"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:elevation="4dp"
+                android:padding="13dp"
+                android:src="@drawable/ic_gallery"
+                android:tint="@color/app_white"
+                android:background="@drawable/circle_blue"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Gallery"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/app_text_size_small"
+                app:fontFamily="@font/work_sans"
+                android:layout_height="match_parent" />
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/open_camera"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            style="@style/SelectableItemBackground"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:elevation="4dp"
+                android:padding="13dp"
+                android:src="@drawable/ic_photo_camera"
+                android:tint="@color/app_white"
+                android:background="@drawable/circle_blue"
+
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Camera"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:textColor="@color/app_black"
+                android:textSize="@dimen/app_text_size_small"
+                app:fontFamily="@font/work_sans"
+                android:layout_height="match_parent" />
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+
+
+</LinearLayout>
