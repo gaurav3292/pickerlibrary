@@ -15,6 +15,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.kmgrv.pickerlib.dialog.DialogUploadPhoto;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
@@ -23,7 +25,7 @@ public class OpenGallery {
 
 
     private Activity activity;
-    private Fragment fragment;
+    private DialogUploadPhoto fragment;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
     private static int RESULT_LOAD_IMAGE = 1;
     private String base64Image;
@@ -39,7 +41,7 @@ public class OpenGallery {
         getPhotoGalleryPermission();
     }
 
-    public OpenGallery(Fragment fragment) {
+    public OpenGallery(DialogUploadPhoto fragment) {
 
         this.fragment = fragment;
         getPhotoGalleryPermission();
@@ -47,22 +49,22 @@ public class OpenGallery {
 
     public void getPhotoGalleryPermission() {
         if (activity != null) {
-            int storageCheck = ContextCompat.checkSelfPermission(activity,
+            int storageCheck = ContextCompat.checkSelfPermission(fragment.getContext(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
             if (storageCheck == PackageManager.PERMISSION_GRANTED) {
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                activity.startActivityForResult(i, RESULT_LOAD_IMAGE);
+                fragment.startActivityForResult(i, RESULT_LOAD_IMAGE);
 
             } else {
-                ActivityCompat.requestPermissions((activity),
+                fragment.requestPermissions(
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, "photos"},
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             }
         } else {
-            int storageCheck = ContextCompat.checkSelfPermission(fragment.getActivity(),
+            int storageCheck = ContextCompat.checkSelfPermission(fragment.getContext(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
             if (storageCheck == PackageManager.PERMISSION_GRANTED) {
@@ -81,7 +83,7 @@ public class OpenGallery {
 
     }
 
-    public Bitmap getPhotoGallery(Intent data) {
+    public Bitmap getPhotoBitmap(Intent data) {
         Bitmap bitmap = null;
         Uri selectedImage = data.getData();
         String[] filePathColumn = {MediaStore.Images.Media.DATA};

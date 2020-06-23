@@ -1,13 +1,11 @@
 package com.kmgrv.pickerlib.handlers;
 
 
-import com.kmgrv.pickerlib.util.OpenCamera;
-import com.kmgrv.pickerlib.util.OpenGallery;
+import com.kmgrv.pickerlib.bean.ImageHolderBean;
 
 public interface MediaHandler {
 
-    public void setOpenCamera(OpenCamera openCamera);
+    public void getImageHolderBean(ImageHolderBean imageHolderBean);
 
-    public void setOpenGallery(OpenGallery openGallery);
 
 }

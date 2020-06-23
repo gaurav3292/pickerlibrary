@@ -15,6 +15,9 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+
+import com.kmgrv.pickerlib.dialog.DialogUploadPhoto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -25,7 +28,7 @@ import java.util.Locale;
 
 public class OpenCamera {
 
-    private Activity activity;
+    private DialogUploadPhoto fragment;
     private static final int MY_PERMISSIONS_REQUEST_READ_CAMERA = 1;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -37,16 +40,23 @@ public class OpenCamera {
 
     public OpenCamera(Activity activity) {
 
-        this.activity = activity;
         getPhoto();
     }
 
+    public OpenCamera(DialogUploadPhoto fragment) {
+
+        this.fragment = fragment;
+        getPhoto();
+    }
+
+
+
     public void getPhoto() {
 
-        int cameraCheck = ContextCompat.checkSelfPermission(activity,
+        int cameraCheck = ContextCompat.checkSelfPermission(fragment.getContext(),
                 Manifest.permission.CAMERA);
 
-        int storageCheck = ContextCompat.checkSelfPermission(activity,
+        int storageCheck = ContextCompat.checkSelfPermission(fragment.getContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (cameraCheck == PackageManager.PERMISSION_GRANTED && storageCheck == PackageManager.PERMISSION_GRANTED) {
@@ -56,13 +66,13 @@ public class OpenCamera {
             Log.d("permission", "not granted");
             if (cameraCheck != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(activity,
+                fragment.requestPermissions(
                         new String[]{Manifest.permission.CAMERA},
                         MY_PERMISSIONS_REQUEST_READ_CAMERA);
 
             } else if (storageCheck != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(activity,
+                fragment.requestPermissions(
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, "camera"},
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             }
@@ -73,14 +83,14 @@ public class OpenCamera {
     public void getCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", getOutputMediaFileUri());
+            fileUri = FileProvider.getUriForFile(fragment.getActivity(),fragment.getActivity().getApplicationContext().getPackageName() + ".provider", getOutputMediaFileUri());
         }else{
             fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
         }
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         // start the image capture Intent
-        activity.startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+        fragment.startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
 
     }
 
@@ -138,8 +148,8 @@ public class OpenCamera {
 
             options.inSampleSize = 8;
 
-            bitmap = AppHelper.getBitmapFromUri(fileUri, activity);
-            bitmap = new RotateImage(bitmap, fileUri.getPath(),activity,fileUri).rotateImage();
+            bitmap = AppHelper.getBitmapFromUri(fileUri, fragment.getContext());
+            bitmap = new RotateImage(bitmap, fileUri.getPath(),fragment.getActivity(),fileUri).rotateImage();
 
            // Bitmap bm = BitmapFactory.decodeFile(fileUri.getPath());
           bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, false);
