@@ -2,6 +2,7 @@ package com.kmgrv.pickerlib.util;
 
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,9 +11,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.webkit.MimeTypeMap;
 
 import androidx.core.content.ContextCompat;
+
+import com.kmgrv.pickerlib.dialog.DialogUploadPhoto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -171,4 +175,6 @@ public class AppHelper {
 
         return bytesArray;
     }
+
+
 }

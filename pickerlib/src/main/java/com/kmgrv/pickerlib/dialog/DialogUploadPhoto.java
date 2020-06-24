@@ -3,22 +3,25 @@ package com.kmgrv.pickerlib.dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.kmgrv.pickerlib.R;
 import com.kmgrv.pickerlib.bean.ImageHolderBean;
 import com.kmgrv.pickerlib.databinding.DialogUploadPhotoBinding;
 import com.kmgrv.pickerlib.handlers.MediaHandler;
+import com.kmgrv.pickerlib.util.ImageGalleryHelper;
 import com.kmgrv.pickerlib.util.OpenCamera;
 import com.kmgrv.pickerlib.util.OpenGallery;
 
@@ -53,6 +56,17 @@ public class DialogUploadPhoto extends BottomSheetDialogFragment implements View
         this.mediaHandler = builder.mediaHandler;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        this.activity = getActivity();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -113,36 +127,43 @@ public class DialogUploadPhoto extends BottomSheetDialogFragment implements View
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (ACCESS != null) {
+            if (ACCESS == CAMERA) {
+                if (resultCode == RESULT_OK) {
+                    // successfully captured the image
+                    // display it in image view
+                    bitmap = openCamera.previewCapturedImage();
+                    base64Image = openCamera.getBase64Image();
+                    mediaHandler.getImageHolderBean(new ImageHolderBean(bitmap, base64Image));
 
-        if (ACCESS == CAMERA) {
-            if (resultCode == RESULT_OK) {
-                // successfully captured the image
-                // display it in image view
-                bitmap = openCamera.previewCapturedImage();
-                base64Image = openCamera.getBase64Image();
+                    dismissPicker();
+
+
+                } else if (resultCode == RESULT_CANCELED) {
+                    // user cancelled Image capture
+
+                    Toast.makeText(activity,
+                            "User cancelled image capture", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    // failed to capture image
+                    Toast.makeText(activity,
+                            "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                            .show();
+                }
+
+
+            } else if (data != null) {
+
+                ImageGalleryHelper imageGalleryHelper = ImageGalleryHelper.getInstance().setContext(this.getActivity());
+                bitmap = imageGalleryHelper.getPhotoBitmap(data);
+                base64Image = ImageGalleryHelper.getInstance().getBase64Image();
                 mediaHandler.getImageHolderBean(new ImageHolderBean(bitmap, base64Image));
 
-
-            } else if (resultCode == RESULT_CANCELED) {
-                // user cancelled Image capture
-
-                Toast.makeText(activity,
-                        "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();
-            } else {
-                // failed to capture image
-                Toast.makeText(activity,
-                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
+                dismissPicker();
             }
-
-
-        } else {
-
-            bitmap = openGallery.getPhotoBitmap(data);
-            base64Image = openGallery.getBase64Image();
-            mediaHandler.getImageHolderBean(new ImageHolderBean(bitmap, base64Image));
         }
+
     }
 
     @Override
@@ -150,26 +171,32 @@ public class DialogUploadPhoto extends BottomSheetDialogFragment implements View
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
 
-        if (ACCESS == CAMERA) {
-            openCamera.getPhoto();
-        } else {
-            openGallery.getPhotoGalleryPermission();
+        if (ACCESS != null) {
+            if (ACCESS == CAMERA) {
+                openCamera.getPhoto();
+            } else {
+                openGallery.getPhotoGalleryPermission();
+            }
         }
 
 
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if(ACCESS!=null){
-            dismissPicker();
+    public void show(FragmentManager manager, String tag) {
+        try {
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.add(this, tag);
+            ft.commitAllowingStateLoss();
+        } catch (IllegalStateException e) {
+            Log.d("ABSDIALOGFRAG", "Exception", e);
         }
     }
 
-    public void dismissPicker(){
+
+    public void dismissPicker() {
         ACCESS = null;
-        dismiss();
-   }
+        dismissAllowingStateLoss();
+    }
 
 }
